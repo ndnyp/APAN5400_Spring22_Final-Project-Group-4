@@ -1,0 +1,46 @@
+{% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+Bookstarter
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1><img height="100px" src="/static/bookstarter_logo.png" /> Bookstarter</h1>
+    <p>Cultivating book love for all ages</p>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr />
+            {% if search_results %}
+            <table class="table">
+                <tr>
+                    <th>Cover</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Pages</th>
+                </tr>
+                {% for i in search_results %}
+                <tr>
+                    <td align="center"><img height="100px"
+                            src="https://covers.openlibrary.org/b/isbn/{{ i['_source']['isbn_13'] }}-M.jpg" /></td>
+                    <td>{% if i["_source"]["NYT_bestseller"] %}🤩{% endif %} {{ i["_source"]["title"] }}</td>
+                    <td>{{ i["_source"]["author"] }}</td>
+                    <td>{{ i["_source"]["subjects"] }}</td>
+                    <td>{{ i["_source"]["number_of_pages"] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p>No results found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
